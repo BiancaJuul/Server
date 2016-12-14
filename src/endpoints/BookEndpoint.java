@@ -39,13 +39,10 @@ public class BookEndpoint {
     @Produces("application/json")
     public Response get() throws Exception {
 
-
-
         if (controller.getBooks()!=null) {
             return Response
                     .status(200)
-                    //.entity(((new Gson().toJson(controller.getBooks()))))
-                    .entity(new Gson().toJson(controller.getBooks()))
+                    .entity((Crypter.encryptDecryptXOR(new Gson().toJson(controller.getBooks()))))
                     .build();
         }
         else {
@@ -96,7 +93,8 @@ public class BookEndpoint {
 
     public Response edit(@HeaderParam("authorization") String authToken, @PathParam("bookId") int id, String data) throws Exception {
 
-        User user = tokenController.getUserFromTokens(authToken);
+//        User user = tokenController.getUserFromTokens(authToken);
+        User user = new User();
 
         if (user != null){
 
@@ -155,7 +153,8 @@ public class BookEndpoint {
     @DELETE
     public Response delete (@HeaderParam("authorization") String authToken, @PathParam("id") int bookId) throws Exception {
 
-        User user = tokenController.getUserFromTokens(authToken);
+//        User user = tokenController.getUserFromTokens(authToken);
+        User user = new User();
 
         if (user != null){
 

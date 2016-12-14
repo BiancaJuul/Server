@@ -2,6 +2,7 @@
  * Created by mortenlaursen on 09/10/2016.
  */
 
+import database.DBConnector;
 import endpoints.HashingEndpoint;
 import com.google.gson.Gson;
 import config.Config;
@@ -37,6 +38,8 @@ public class MyApplication extends Application {
     Config.setDbUserName(config.getDbUserName());
 
   }
+
+
 
   //The method returns a non-empty collection with classes, that must be included in the published JAX-RS application
   @Override

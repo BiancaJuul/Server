@@ -42,7 +42,7 @@ public class CurriculumEndpoint {
         if (curriculumController.getCurriculum(curriculumID) != null) {
             return Response
                     .status(200)
-                    .entity(new Gson().toJson(Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculumBooks(curriculumID)))))
+                    .entity((Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculumBooks(curriculumID)))))
                     .header("Access-Control-Allow-Origin", "*") //Skal måske være der
                     .build(); //kør
         } else {
@@ -66,7 +66,7 @@ public class CurriculumEndpoint {
         if (curriculumController.getCurriculums() != null) {
             return Response
                     .status(200)
-                    .entity(new Gson().toJson(Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculums()))))
+                    .entity((Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculums()))))
                     .header("Access-Control-Allow-Origin", "*") //Skal måske være der
                     .build(); //kør
         } else {
@@ -93,7 +93,7 @@ public class CurriculumEndpoint {
         if (curriculumController.getCurriculums() != null) {
             return Response
                     .status(200)
-                    .entity(new Gson().toJson(Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculum(id)))))
+                    .entity((Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculum(id)))))
                     .header("Access-Control-Allow-Origin", "*") //Skal måske være der
                     .build(); //kør
         } else {
@@ -123,7 +123,7 @@ public class CurriculumEndpoint {
                     .status(200)
                     //nedenstående skal formentlig laves om. Den skal ikke returne curriculums. Lavet for at checke
                     //at den skriver til db.
-                    .entity(new Gson().toJson(Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculums()))))
+                    .entity((Crypter.encryptDecryptXOR(new Gson().toJson(curriculumController.getCurriculums()))))
                     .build();
         }
         else return Response
@@ -138,7 +138,9 @@ public class CurriculumEndpoint {
 
     public Response create(@HeaderParam("authorization") String authToken, @PathParam("curriculumID")int curriculumID, String data) throws Exception {
 
-        User user = tokenController.getUserFromTokens(authToken);
+//        User user = tokenController.getUserFromTokens(authToken);
+
+        User user = new User();
 
         if (user != null){
             String s = new Gson().fromJson(data,String.class);
@@ -170,7 +172,8 @@ public class CurriculumEndpoint {
 
     public Response edit(@HeaderParam("authorization") String authToken, @PathParam("curriculumID") int id, String data) throws SQLException {
 
-        User user = tokenController.getUserFromTokens(authToken);
+//        User user = tokenController.getUserFromTokens(authToken);
+        User user = new User();
 
         if (user != null){
             if (curriculumController.getCurriculum(id)!=null) {
@@ -213,7 +216,8 @@ public class CurriculumEndpoint {
 
     public Response delete(@HeaderParam("authorization") String authToken, @PathParam("curriculumId") int id) throws SQLException {
 
-        User user = tokenController.getUserFromTokens(authToken);
+//        User user = tokenController.getUserFromTokens(authToken);
+        User user = new User();
 
         if (user != null){
             if(curriculumController.deleteCurriculum(id)) {

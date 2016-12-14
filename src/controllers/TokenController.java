@@ -1,6 +1,7 @@
 package controllers;
 
 import Encrypters.*;
+import config.Config;
 import database.DBConnector;
 import model.User;
 
@@ -15,23 +16,23 @@ public class TokenController {
 
     DBConnector db = new DBConnector();
 
-    public String authenticate(String username, String password) throws SQLException {
+
+    public User authenticate(String username, String password) throws SQLException {
         // Authenticate the user using the credentials provided
+      String hashedPassword = Digester.hashWithSalt(password);
 
-        String token;
-
-        User foundUser = db.authenticate(username, password);
+        User foundUser = db.authenticate(username, hashedPassword); //,hashedPassword)
         if (foundUser != null) {
 
-            token = Crypter.buildToken("abcdefghijklmnopqrstuvxyz1234567890@&%!?", 25);
-
+            String token = Crypter.buildToken("abcdefghijklmnopqrstuvxyz1234567890@&%!?", 25);
+            db.backup("1: " + token);
             db.addToken(token, foundUser.getUserID());
-
-        } else {
-            token = null;
+            db.backup("2: " + token);
+            foundUser.setToken(token);
         }
+
         //Retunerer en access token til klienten.
-        return token;
+        return foundUser;
 
 
     }
@@ -50,5 +51,10 @@ public class TokenController {
         db.close();
         return deleteToken;
 
+    }
+
+    public boolean validateToken(String authToken) {
+        DBConnector db = new DBConnector();
+        return db.validateToken(authToken);
     }
 }

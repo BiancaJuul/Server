@@ -22,7 +22,8 @@ public class HashingEndpoint {
     // The Java method will produce content identified by the MIME Media type "text/plain"
     @Produces("text/plain")
 
-    public String hashWithSalt() { return Digester.hashWithSalt("what"); }
+    public String hashWithSalt() {
+        return Digester.hashWithSalt("what"); }
 
 
     @Path("/getit")
